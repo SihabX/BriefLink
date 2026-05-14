@@ -1,0 +1,21 @@
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block access to protected files (underscore-prefixed)
+    RewriteRule ^_ - [F,L]
+
+    # Route /admin to admin.php
+    RewriteRule ^admin/?$ admin.php [L,QSA]
+
+    # If the file or directory exists, serve it directly
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Route /{prefix}/{code} to links.php
+    RewriteRule ^([^/]+)/([^/]+)$ links.php?c=$2 [L,QSA]
+
+    # Route /{code} to links.php (single segment, not a file)
+    RewriteRule ^([^/.]+)$ links.php?c=$1 [L,QSA]
+</IfModule>
